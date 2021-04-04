@@ -4,8 +4,9 @@ import matplotlib.pyplot as plt
 import random as rndm
 import sys
 import math
+from timeit import default_timer as timer
 
-coords = []
+
 if len(sys.argv) != 3:
     max_coord = int(input("Max X/Y Value: "))
     max_num_of_points = pow(max_coord + 1, 2)
@@ -37,11 +38,17 @@ def generate_coord():
 
 
 def generate_coords():
-    for point in range(0, num_of_points):
+    first_coord = generate_coord()
+    coordinates = []
+    for point in range(1, num_of_points):
         new_coord = generate_coord()
-        while new_coord in coords:
+        while new_coord in coordinates or new_coord == first_coord:
             new_coord = generate_coord()
-        coords.append(new_coord)
+        coordinates.append(new_coord)
+
+    coordinates.sort(key=lambda k: (k[0], k[1]))
+    coordinates.insert(0,first_coord)
+    return coordinates
 
 
 def get_v_between_two_points(p1, p2):
@@ -94,18 +101,15 @@ def sort_points_nearest_neighbour(points):
     return sorted_points, distance
 
 
-def nearest_neighbour():
-    sorted_points_nearest_neighbour, distance_arr = sort_points_nearest_neighbour(coords)
+def nearest_neighbour(points):
+    start = timer()
+    sorted_points_nearest_neighbour, distance_arr = sort_points_nearest_neighbour(points)
+    end = timer()
     # The data are given as list of lists (2d list)
     data = np.array(sorted_points_nearest_neighbour)
 
     # Taking transpose
     x, y = data.T
-
-    # Print Coords
-    print("Points:")
-    for point in sorted_points_nearest_neighbour:
-        print(point)
 
     # plot our list in X,Y coordinates
     plt.plot(x, y)
@@ -122,14 +126,20 @@ def nearest_neighbour():
     # v = get_v_between_two_points(sorted_points_nearest_neighbour[0], sorted_points_nearest_neighbour[1])
     # plt.arrow(sorted_points_nearest_neighbour[0][0], sorted_points_nearest_neighbour[0][1], v[0], v[1])
 
-    return plt, fastest_route_text, distance_arr
+    return plt, fastest_route_text, distance_arr, end-start
 
 
-plt.figure(dpi=300)
-generate_coords()
-plt, fastest_route, distances = nearest_neighbour()
+coords = generate_coords()
+# Print Coords
+print("Coords:")
+for coord in coords:
+    print(coord)
+plt, fastest_route, distances, time_in_seconds = nearest_neighbour(coords.copy())
 plt.show()
 print()
 print("Nearest Neighbour:")
 print(fastest_route)
 print("Total Distance: ", str(sum_list(distances)))
+print("Time in ms: ", str(time_in_seconds*1000))
+
+print()
