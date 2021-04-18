@@ -135,11 +135,11 @@ print("Coords:")
 for coord in coords:
     print(coord)
 plt, fastest_route, distances, time_in_seconds = nearest_neighbour(coords.copy())
-plt.show()
 print()
 print("Nearest Neighbour:")
 print(fastest_route)
 print("Total Distance: ", str(sum_list(distances)))
 print("Time in ms: ", str(time_in_seconds*1000))
+plt.show()
 
 print()
