@@ -133,8 +133,7 @@ def nearest_neighbour(points):
 coords = generate_coords()
 # Print Coords
 print("Coords:")
-for coord in coords:
-    print(coord)
+print(str(coords))
 plt, fastest_route, distances, time_in_seconds = nearest_neighbour(coords.copy())
 print()
 print("Nearest Neighbour:")
