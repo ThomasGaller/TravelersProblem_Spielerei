@@ -1,11 +1,11 @@
 # importing Matplotlib and Numpy Packages
-import numpy as np
-import matplotlib.pyplot as plt
+import math
 import random as rndm
 import sys
-import math
 from timeit import default_timer as timer
 
+import matplotlib.pyplot as plt
+import numpy as np
 
 if len(sys.argv) != 3:
     max_coord = int(input("Max X/Y Value: "))
@@ -47,7 +47,7 @@ def generate_coords():
         coordinates.append(new_coord)
 
     coordinates.sort(key=lambda k: (k[0], k[1]))
-    coordinates.insert(0,first_coord)
+    coordinates.insert(0, first_coord)
     return coordinates
 
 
@@ -119,14 +119,15 @@ def nearest_neighbour(points):
         plt.annotate("P" + str(i), (sorted_points_nearest_neighbour[i][0], sorted_points_nearest_neighbour[i][1]),
                      textcoords="offset points", xytext=(0, 5))
         if i != len(sorted_points_nearest_neighbour) - 1:
-            fastest_route_text += str(sorted_points_nearest_neighbour[i]) + "(+" + str(distance_arr[i]) + ") --> "
+            fastest_route_text += str(sorted_points_nearest_neighbour[i]) + "(+" + str(
+                round(distance_arr[i], 2)) + ") --> "
         else:
-            fastest_route_text += str(sorted_points_nearest_neighbour[i]) + "(+" + str(distance_arr[i]) + ")"
+            fastest_route_text += str(sorted_points_nearest_neighbour[i]) + "(+" + str(round(distance_arr[i], 2)) + ")"
 
     # v = get_v_between_two_points(sorted_points_nearest_neighbour[0], sorted_points_nearest_neighbour[1])
     # plt.arrow(sorted_points_nearest_neighbour[0][0], sorted_points_nearest_neighbour[0][1], v[0], v[1])
 
-    return plt, fastest_route_text, distance_arr, end-start
+    return plt, fastest_route_text, distance_arr, end - start
 
 
 coords = generate_coords()
@@ -139,7 +140,7 @@ print()
 print("Nearest Neighbour:")
 print(fastest_route)
 print("Total Distance: ", str(sum_list(distances)))
-print("Time in ms: ", str(time_in_seconds*1000))
+print("Time in ms: ", str(time_in_seconds * 1000))
 plt.show()
 
 print()
